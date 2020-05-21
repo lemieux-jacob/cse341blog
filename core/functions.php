@@ -1,20 +1,17 @@
 <?php
+// Render Views and Partials (e.g. render('views/home', $data_array))
 function render($name, $data = []) {
   extract($data);
 
-  return require "app/{$name}.php";
+  require "../app/views/{$name}.php";
+  exit;
 }
 
-// Plural: Posts, Comments, Tags
-function crud($controller) {
-  return [
-    strPlural($controller) => controller($controller, 'index'),
-    "{$controller}" => controller($controller, 'show'),
-    "{$controller}/create" => controller($controller, 'create'),
-    "{$controller}/edit" => controller($controller, 'edit'),
-    "{$controller}/update" => controller($controller, 'update'),
-    "{$controller}/delete" => controller($controller, 'delete')
-  ];
+// Redirect with Optional Message
+function redirect($location, $msg = "") {
+  $_SESSION['msg'] = $msg;
+  header('Location: ' . $location);
+  exit;
 }
 
 /**
@@ -24,3 +21,15 @@ function crud($controller) {
 function strPlural($str) {
   return $str . "s";
 }
+
+// For Debugging
+function dd($var) {
+  var_dump($var);
+  die();
+}
+
+// Check if User is Logged in
+
+// Authorize User
+
+// Protect Route
