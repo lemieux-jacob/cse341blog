@@ -1,23 +1,17 @@
 <?php
-namespace Core;
+namespace App;
 
 // A Router Class
 
 class Router {
 
-  public $routes = [];
+  private $routes = [];
 
-  public function register($uri, $action) {
-    $this->routes[$uri] = $action;
+  function __construct($routes) {
+    $this->routes = $routes;
   }
 
   public function direct($uri, $method = 'GET') {
-    $uri = trim(parse_url($uri, PHP_URL_PATH), '/');
-
-    if (empty($uri)) {
-      $uri = '/';
-    }
-
     if (array_key_exists($uri, $this->routes)) {
       $action = $this->routes[$uri];
 
