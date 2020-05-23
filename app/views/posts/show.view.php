@@ -31,40 +31,52 @@
 </div>
 <?php endif; ?>
 
+<div class="m-3">
+  <h3>Comments</h3>
+</div>
 
 <?php foreach($comments as $comment): ?>
+<div class="d-flex align-items-center">
+  <div class="col-sm-2 align-self-start text-right m-2">
+    <?php if (access($comment) === 'owner'): ?>
+    <span><?= $comment->author()->display_name; ?><b>(You): </b></span>
+    <?php else: ?>
+    <span><?= $comment->author()->display_name; ?>: </span>
+    <?php endif; ?>
+  </div>
+  <div class="col speech-bubble mb-4">
+    <p><?= $comment->body; ?></p>
+    <div class="d-flex align-content-end p-0 bg-light rounded">
+      <div class="px-2 py-3">
+        Replied on: <?= $comment->posted_on; ?>
+      </div>
+      <?php if (auth($comment)): ;?>
+      <div class="ml-auto">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CommentModal"
+          data-post="<?= $comment->post_id; ?>" data-user="<?= $comment->user_id; ?>"
+          data-comment="<?= $comment->id; ?>" data-body="<?= $comment->body;?>">Edit</button>
+      </div>
+      <div>
+        <form method="POST" class="form-inline m-0" action="/comments/delete">
+          <input type="hidden" name="comment_id" value="<?= $comment->id; ?>">
+          <input class="btn btn-danger ml-1 mr-3" type="submit" value="Delete">
+        </form>
+      </div>
+      <?php endif; ?>
+    </div>
+  </div>
+</div>
 <div class="card">
   <div class="card-body text-light bg-gradient-dark">
-    <p><?= $comment->body; ?></p>
-  </div>
-  <div class="d-flex align-items-center p-0">
-    <div class="px-2 py-3">
-      <?php if (access($comment) === 'owner'): ?>
-      <span><?= $comment->author()->display_name; ?><b>(You): </b></span>
-      <?php else: ?>
-      <span><?= $comment->author()->display_name; ?>:</span>
-      <?php endif; ?>
-      Replied on: <?= $comment->posted_on; ?>
-    </div>
-    <?php if (auth($comment)): ;?>
-    <div class="ml-auto">
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CommentModal" 
-        data-post="<?= $comment->post_id; ?>" data-user="<?= $comment->user_id; ?>" data-comment="<?= $comment->id; ?>" data-body="<?= $comment->body;?>">Edit</button>
-    </div>
-    <div>
-      <form method="POST" class="form-inline m-0" action="/comments/delete">
-        <input type="hidden" name="comment_id" value="<?= $comment->id; ?>">
-        <input class="btn btn-danger ml-1 mr-3" type="submit" value="Delete">
-      </form>
-    </div>
-    <?php endif; ?>
+
   </div>
 </div>
 <?php endforeach; ?>
 
 <?php partial('footer'); ?>
 
-<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="CommentModalLabel" aria-hidden="true">
+<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="CommentModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
