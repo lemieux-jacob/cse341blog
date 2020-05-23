@@ -36,7 +36,10 @@ class TagController {
   }
 
   public function remove() {
-    //
+    $form = [
+      'post_id' => filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT),
+      'name' => filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING)
+    ];
   }
 
 }
