@@ -8,70 +8,43 @@ class Tag {
 
   private $id;
   private $name;
-  private $post;
 
   public function attr($attr) {
     return $this->$attr;
   }
 
+  // References Posts via PostTags Table
+  public function posts() {
+    $pdo = DB::connect();
+    $stmt = $pdo->prepare('SELECT "Posts".* FROM "PostTags" INNER JOIN "Posts" ON "Posts".id = "PostTags".post_id WHERE "PostTags".tag_id = :id');
+    $stmt->execute([':id' => $this->id]);
+    $posts = $stmt->fetchAll(PDO::FETCH_CLASS, "App\Models\Post");
+    $stmt->closeCursor();
+    return $posts;
+  }
+
   public static function create($data) {
     $pdo = DB::connect();
-    $stmt->prepare('INSERT INTO "Tags" (name) VALUES (:name) RETURNING *');
+    $stmt = $pdo->prepare('INSERT INTO "Tags" (name) VALUES (:name) RETURNING *');
     $stmt->execute([':name' => $data['name']]);
-    $rows = $stmt->fetchAll(FETCH_CLASS, __CLASS__);
+    $rows = $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     $stmt->closeCursor();
     return $rows[0];
   }
 
   public static function fetch($name) {
     $pdo = DB::connect();
-    $stmt->prepare('SELECT * FROM "Tags" WHERE name = :name');
+    $stmt = $pdo->prepare('SELECT * FROM "Tags" WHERE name = :name');
     $stmt->execute([':name' => $name]);
-    $tags = $stmt->fetchAll(FETCH_CLASS, __CLASS__);
+    $tags = $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     $stmt->closeCursor();
     return $tags[0];
   }
 
-  public static function fetchAll($post_id) {
-    $pdo = DB::connect();
-    $stmt->prepare('SELECT "Tags".* FROM "PostTags" INNER JOIN "Tags" ON "Tags".id = "PostTags".tag_id WHERE "Posts".id = :id');
-    $stmt->execute([':id' => $post_id]);
-    $tags = $stmt->fetchAll(FETCH_CLASS, __CLASS__);
-    $stmt->closeCursor();
-    return $tags;
-  }
-
-  public static function search($search) {
-    $pdo = DB::connect();
-    $stmt->prepare('SELECT "Tags".* FROM "PostTags" INNER JOIN "Tags" ON "Tags".id = "PostTags".tag_id WHERE "Posts".name LIKE ?');
-    $stmt->execute(['%'.$search.'%']);
-    $tags = $stmt->fetchAll(FETCH_CLASS, __CLASS__);
-    $stmt->closeCursor();
-    return $tags;
-  }
-
   public static function delete($id) {
     $pdo = DB::connect();
-    $stmt->prepare('DELETE FROM "Tags" WHERE id = :id');
+    $stmt = $pdo->prepare('DELETE FROM "Tags" WHERE id = :id');
     $stmt->execute([':id' => $id]);
-    $result = $stmt->rowCount();
-    $stmt->closeCursor();
-    return $result;
-  }
-
-  public static function addPostTag($tag_id, $post_id) {
-    $pdo = DB::connect();
-    $stmt->prepare('INSERT INTO "PostTags" (post_id, tag_id) VALUES (:post_id, :tag_id)');
-    $stmt->execute([':post_id' => $post_id, ':tag_id' => $tag_id]);
-    $result = $stmt->rowCount();
-    $stmt->closeCursor();
-    return $result;
-  }
-
-  public static function removePostTag($tag_id, $post_id) {
-    $pdo = DB::connect();
-    $stmt->prepare('DELETE FROM "PostTags" WHERE post_id = :post_id AND tag_id = :tag_id)');
-    $stmt->execute([':post_id' => $post_id, ':tag_id' => $tag_id]);
     $result = $stmt->rowCount();
     $stmt->closeCursor();
     return $result;

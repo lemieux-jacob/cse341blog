@@ -25,3 +25,7 @@ Install a robust ORM like Doctrine. Convert the App into a SPA (Vue?) with a sim
 (Alternatively port into Lumen)
 
 Future proofing: Fix "Autoload PSR-4 issue with Composer 2.0"
+
+Normalize the Code:
+
+Add Model and Controller base classes to contain common methods/properties for classes.

@@ -58,17 +58,13 @@
       </div>
       <div>
         <form method="POST" class="form-inline m-0" action="/comments/delete">
+          <input type="hidden" name="post_id" value="<?= $post->id; ?>">
           <input type="hidden" name="comment_id" value="<?= $comment->id; ?>">
           <input class="btn btn-danger ml-1 mr-3" type="submit" value="Delete">
         </form>
       </div>
       <?php endif; ?>
     </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-body text-light bg-gradient-dark">
-
   </div>
 </div>
 <?php endforeach; ?>

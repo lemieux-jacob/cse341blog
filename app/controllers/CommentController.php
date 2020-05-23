@@ -35,7 +35,7 @@ class CommentController {
       dd('Error!: Post ID invalid or missing');
     }
 
-    if (!$user->isAdmin() || $user()->id != $user_id) {
+    if (!$user->isAdmin() || $user->id != $form['user_id']) {
       dd('Error!: Action is not authorized');
     }
 
@@ -86,21 +86,22 @@ class CommentController {
   */
   public function delete() {
     $comment_id = filter_input(INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT);
+    $post_id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
 
     if (empty($comment_id)) {
-      dd('Error!: Comment does not exist');
+      dd('Error!: Comment ID empty or invalid');
     }
 
     if (!$comment && !auth($comment)) {
       dd('Error!: This action is not authorized');
     }
 
-    Comment::delete($comment_id);
+    $result = Comment::delete($comment_id);
 
     if ($result) {
-      return redirect('/posts/view?id=' . $form['post_id'], 'Success!: Comment Deleted!');
+      return redirect('/posts/view?id=' . $post_id, 'Success!: Comment Deleted!');
     }
-    return redirect('/posts/view?id=' . $form['post_id'], 'Error!: Failed to delete Comment');
+    return redirect('/posts/view?id=' . $post_id, 'Error!: Failed to delete Comment');
   }
 
   /**

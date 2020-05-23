@@ -17,8 +17,12 @@
         Posted on: <?= $post->posted_on; ?> By: <?= $post->author()->display_name; ?>
       </div>
       <a class="btn btn-primary ml-auto" href="/posts/view?id=<?= $post->id ?>">View Post</a>
-      <?php if (user() && user()->isAdmin()): ?>
+      <?php if (access($post)): ?>
       <a class="btn btn-primary mx-1" href="/posts/edit?id=<?= $post->id ?>">Edit Post</a>
+      <form method="POST" class="form-inline m-0" action="/posts/delete">
+        <input type="hidden" name="post_id" value="<?= $post->id; ?>">
+        <input class="btn btn-danger" type="submit" value="Delete">
+      </form>
       <?php endif; ?>
     </div>
   </div>

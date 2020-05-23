@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="/styles/app.css">
+  <script src="https://kit.fontawesome.com/ec58e5f1d7.js" crossorigin="anonymous"></script>
 </head>
 
 <body>

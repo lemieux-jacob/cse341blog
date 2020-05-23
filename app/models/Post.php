@@ -9,7 +9,7 @@ use \PDO;
 class Post {
 
   public $id;
-  private $user_id;
+  public $user_id;
   public $title;
   public $body;
   public $posted_on;
@@ -19,9 +19,14 @@ class Post {
     return User::fetch($this->user_id);
   }
 
-  // Get Tags for Post
+  // Fetch all Tags for Post
   public function tags() {
-    return Tag::fetchAll($this->id);
+    $pdo = DB::connect();
+    $stmt = $pdo->prepare('SELECT "Tags".* FROM "PostTags" INNER JOIN "Tags" ON "Tags".id = "PostTags".tag_id WHERE "PostTags".post_id = :id');
+    $stmt->execute([':id' => $this->id]);
+    $tags = $stmt->fetchAll(PDO::FETCH_CLASS, 'App\Models\Tag');
+    $stmt->closeCursor();
+    return $tags;
   }
 
   // Cast Array to Post
@@ -105,6 +110,26 @@ class Post {
     $pdo = DB::connect();
     $stmt = $pdo->prepare('DELETE FROM "Posts" WHERE id=:id');
     $stmt->execute([':id' => $id]);
+    $result = $stmt->rowCount();
+    $stmt->closeCursor();
+    return $result;
+  }
+
+  // Add Tag
+  public function addTag($tag_id) {
+    $pdo = DB::connect();
+    $stmt = $pdo->prepare('INSERT INTO "PostTags" (post_id, tag_id) VALUES (:post_id, :tag_id)');
+    $stmt->execute([':post_id' => $this->id, ':tag_id' => $tag_id]);
+    $result = $stmt->rowCount();
+    $stmt->closeCursor();
+    return $result;
+  }
+
+  // Remove Tag
+  public function removeTag($tag_id, $post_id) {
+    $pdo = DB::connect();
+    $stmt = $pdo->prepare('DELETE FROM "PostTags" WHERE post_id = :post_id AND tag_id = :tag_id)');
+    $stmt->execute([':post_id' => $this->id, ':tag_id' => $tag_id]);
     $result = $stmt->rowCount();
     $stmt->closeCursor();
     return $result;

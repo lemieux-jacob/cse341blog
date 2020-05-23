@@ -113,10 +113,17 @@ class PostController {
 
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
+    if (empty($id)) {
+      dd('Error!: Post does not exist');
+    }
+
+    $post = Post::fetch($id);
+
     return view('/posts/edit', [
       'user' => $user,
       'form' => [],
-      'post' => Post::fetch($id)
+      'post' => $post,
+      'tags' => $post->tags()
     ]);
   }
 
@@ -177,7 +184,7 @@ class PostController {
       dd('Error!: Action is not authorized');
     }
 
-    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
 
     if (empty($id)) {
       dd('Error!: Post ID invalid or missing');
