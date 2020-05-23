@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Tag;
 use App\DB;
 use \PDO;
 
@@ -16,6 +17,10 @@ class Post {
   // Get Post Author
   public function author() {
     return User::fetch($this->user_id);
+  }
+
+  public function tags() {
+    return Tag::fetchAll($this->id);
   }
 
   // Cast Array to Post

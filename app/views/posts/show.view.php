@@ -11,6 +11,7 @@
   </div>
 </div>
 
+<?php if (user()): ?>
 <div class="card my-4">
   <div class="card-body">
     <form class="form" method="POST" action="/comments/store">
@@ -28,6 +29,7 @@
     </form>
   </div>
 </div>
+<?php endif; ?>
 
 
 <?php foreach($comments as $comment): ?>

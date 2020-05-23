@@ -19,7 +19,7 @@ class UserController {
   }
 
   /**
-   * Display a User's Account Info
+   * Display a User's Account Info (Not Implemented)
   */
   public function show() {
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);

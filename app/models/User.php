@@ -68,9 +68,10 @@ class User {
     return $user;
   }
 
-  // Fetch all Posts from the DB
+  // Fetch all Users from the DB
   public static function fetchAll() {
     $pdo = DB::connect();
+    $pdo = $this->db->dbh;
     $stmt = $pdo->prepare('SELECT * FROM "Users"');
     $stmt->execute();
     $users = $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
@@ -78,7 +79,7 @@ class User {
     return $users;
   }
 
-  // Update Post in DB
+  // Update User in DB
   public function update($data) { 
     $pdo = DB::connect();
     $stmt = $pdo->prepare('UPDATE "Users" 
@@ -96,7 +97,7 @@ class User {
     return $result;
   }
 
-  // Delete Post from DB
+  // Delete User from DB
   public static function delete($id) {
     $pdo = DB::connect();
     $stmt = $pdo->prepare('DELETE FROM "Users" WHERE id=:id');
