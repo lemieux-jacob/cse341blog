@@ -9,16 +9,16 @@
         <input id="display_name" class="form-control" type="text" name="display_name" value="<?php if (isset($form['display_name'])) echo $form['display_name']; 
         else if (isset($user->display_name)) echo $user->display_name; ?>" required autofocus>
       </div>
-      <?php if ($formTitle === "Register"): ?>
+      <?php if ($formTitle === "Edit User"): ?>
+      <div class="form-group">
+        <label for="old-password">Current Password: </label>
+        <input id="old-password" class="form-control" type="password" name="old_password" placeholder="password" required>
+      </div>
+      <?php else: ?>
       <div class="form-group">
         <label for="email">Email: </label>
         <input id="email" class="form-control" type="email" name="email" placeholder="example@domain.com" value="<?php if (isset($form['email'])) echo $form['email']; 
         else if (isset($user->email)) echo $user->email; ?>" required>
-      </div>
-      <?php else: ?>
-      <div class="form-group">
-        <label for="old-password">Current Password: </label>
-        <input id="old-password" class="form-control" type="password" name="old_password" placeholder="password" required>
       </div>
       <?php endif; ?>
       <div class="form-group">

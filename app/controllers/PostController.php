@@ -38,8 +38,11 @@ class PostController {
   public function show() {
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
+    $post = Post::fetch($id);
+
     return view('posts/show', [
-      'post' => Post::fetch($id), 
+      'post' => $post,
+      'tags' => $post->tags(),
       'comments' => Comment::fetchAll($id)
     ]);
   }

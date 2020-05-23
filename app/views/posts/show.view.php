@@ -11,6 +11,13 @@
       <?= $post->body; ?>
     </article>
   </div>
+  <div class="card-footer">
+    <?php foreach($tags as $tag):?>
+    <div class="badge badge-pill badge-secondary">
+      <?= $tag->attr('name') ;?>
+    </div>
+    <?php endforeach; ?>
+  </div>
 </div>
 
 <?php if (user()): ?>
