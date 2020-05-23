@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 session_start();
 
 // Require Composer's Autoload
-require '../vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 /** 
  * Simple Router

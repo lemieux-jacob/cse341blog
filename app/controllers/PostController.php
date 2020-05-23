@@ -1,10 +1,19 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\PostController;
 
 use App\Models\Post;
 use App\Models\Comment;
+use Parsedown;
 
 class PostController {
+
+  function __construct() {
+    $pd = new Parsedown();
+
+    $pd->setSafeMode(true);
+
+    $this->pd = $pd;
+  }
 
   /**
    * Display and Search All Posts
@@ -79,6 +88,9 @@ class PostController {
     // Optimize Titles for Search
     $form['title'] = ucwords(strtolower($form['title']));
 
+    // Parse Body (Parsedown/Markdown)
+    $form['body'] = $this->pd->text($form['body']);
+
     $post = Post::create($form);
 
     if ($post) {
@@ -143,6 +155,9 @@ class PostController {
 
     // Optimize Titles for Search
     $form['title'] = ucwords(strtolower($form['title']));
+
+    // Parse Body (Parsedown/Markdown)
+    $form['body'] = $this->pd->text($form['body']);
 
     $result = $post->update($form);
 

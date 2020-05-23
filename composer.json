@@ -3,7 +3,8 @@
   "type": "project",
   "description": "",
   "require": {
-    "php": "^7.1.0"
+    "php": "^7.1.0",
+    "erusev/parsedown": "^1.7"
   },
   "autoload": {
     "psr-4": {

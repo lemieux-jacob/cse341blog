@@ -9,7 +9,7 @@
         <input class="form-control" name="title" id="posttitle" type="text" value="<?php if (isset($form['title'])) echo $form['title']; 
         else if (isset($post->title)) echo $post->title; ?>">
       </div>
-      <label for="postbody">Body: </label>
+      <label for="postbody">Body: (Uses Markdown for Formating)</label>
       <textarea class="form-control" name="body" id="postbody" rows="10" type="text"><?php if (isset($form['body'])) echo $form['body']; else if (isset($post->body)) echo $post->body; ?></textarea>
       <?php if (isset($post)): ?>
         <input name="post_id" type="hidden" value="<?php echo $post->id; ?>">
