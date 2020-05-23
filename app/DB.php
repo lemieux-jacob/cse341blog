@@ -10,8 +10,8 @@ class DB {
     
     if (empty($dbUrl)) {
       // Use Local DB
-      $user = 'postgres';
-      $password = 'Secret#01';
+      $dbUser = 'postgres';
+      $dbPassword = 'Secret#01';
       $connection = 'pgsql:host=localhost;dbname=myBlog';
     } else {
       // Use Remote DB
@@ -27,7 +27,7 @@ class DB {
     }
     // Attempt Connection
     try {
-      $db = new PDO($connection, $user, $password);
+      $db = new PDO($connection, $dbUser, $dbPassword);
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $ex) {
       dd('Error!:' . $ex->getMessage());
