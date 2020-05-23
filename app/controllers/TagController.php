@@ -54,7 +54,7 @@ class TagController {
    */
   public function remove() {
     $post_id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
-    $tag_id = filter_input(INPUT_POST, 'tags', FILTER_SANITIZE_STRING);
+    $tag_id = filter_input(INPUT_POST, 'tag_id', FILTER_SANITIZE_STRING);
 
     if (empty($post_id) || empty($tag_id)) {
       return redirect('/', 'Error!: Missing Post or Tag ID');
