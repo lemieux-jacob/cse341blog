@@ -16,11 +16,20 @@ class Tag {
 
   public static function create($data) {
     $pdo = DB::connect();
-    $stmt->prepare('INSERT INTO "Tags" (name) VALUES (:name)');
+    $stmt->prepare('INSERT INTO "Tags" (name) VALUES (:name) RETURNING *');
     $stmt->execute([':name' => $data['name']]);
-    $result = $stmt->rowCount();
+    $rows = $stmt->fetchAll(FETCH_CLASS, __CLASS__);
     $stmt->closeCursor();
-    return $result;
+    return $rows[0];
+  }
+
+  public static function fetch($name) {
+    $pdo = DB::connect();
+    $stmt->prepare('SELECT * FROM "Tags" WHERE name = :name');
+    $stmt->execute([':name' => $name]);
+    $tags = $stmt->fetchAll(FETCH_CLASS, __CLASS__);
+    $stmt->closeCursor();
+    return $tags[0];
   }
 
   public static function fetchAll($post_id) {

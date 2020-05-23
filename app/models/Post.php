@@ -19,6 +19,7 @@ class Post {
     return User::fetch($this->user_id);
   }
 
+  // Get Tags for Post
   public function tags() {
     return Tag::fetchAll($this->id);
   }
@@ -67,10 +68,10 @@ class Post {
   public static function fetchAll($search = null) {
     $pdo = DB::connect();
     if ($search != null) {
-      $stmt = $pdo->prepare('SELECT * FROM "Posts" WHERE title LIKE ? ORDER BY posted_on');
+      $stmt = $pdo->prepare('SELECT * FROM "Posts" WHERE title LIKE ? ORDER BY posted_on DESC');
       $stmt->execute(['%'.$search.'%']);
     } else {
-      $stmt = $pdo->prepare('SELECT * FROM "Posts" ORDER BY posted_on');
+      $stmt = $pdo->prepare('SELECT * FROM "Posts" ORDER BY posted_on DESC');
       $stmt->execute();
     }
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);

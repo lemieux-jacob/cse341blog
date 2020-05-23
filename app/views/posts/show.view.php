@@ -6,7 +6,7 @@
       <h3 class="display-3"><?= $post->title; ?></h3>
       <span class="text-muted">Posted on: <?= $post->posted_on; ?> By: <?= $post->author()->display_name; ?></span>
       <hr>
-      <p><?= $post->body; ?></p>
+      <?= $post->body; ?>
     </article>
   </div>
 </div>
@@ -34,18 +34,16 @@
 
 <?php foreach($comments as $comment): ?>
 <div class="card">
-  <div class="card-header">
-    <?php if (access($comment) === 'owner'): ?>
-    <span><?= $comment->author()->display_name; ?><b>(You): </b></span>
-    <?php else: ?>
-    <span><?= $comment->author()->display_name; ?>:</span>
-    <?php endif; ?>
-  </div>
-  <div class="card-body text-dark bg-light">
+  <div class="card-body text-light bg-gradient-dark">
     <p><?= $comment->body; ?></p>
   </div>
-  <div class="card-footer d-flex align-items-center p-0">
+  <div class="d-flex align-items-center p-0">
     <div class="px-2 py-3">
+      <?php if (access($comment) === 'owner'): ?>
+      <span><?= $comment->author()->display_name; ?><b>(You): </b></span>
+      <?php else: ?>
+      <span><?= $comment->author()->display_name; ?>:</span>
+      <?php endif; ?>
       Replied on: <?= $comment->posted_on; ?>
     </div>
     <?php if (auth($comment)): ;?>
@@ -56,7 +54,7 @@
     <div>
       <form method="POST" class="form-inline m-0" action="/comments/delete">
         <input type="hidden" name="comment_id" value="<?= $comment->id; ?>">
-        <input class="btn btn-danger" type="submit" value="Delete">
+        <input class="btn btn-danger ml-1 mr-3" type="submit" value="Delete">
       </form>
     </div>
     <?php endif; ?>

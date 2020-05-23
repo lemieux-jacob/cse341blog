@@ -20,7 +20,7 @@ function access($resource) {
   return false;
 }
 
-function auth($resource) {
+function auth($resource = null) {
   if (access($resource) != false) {
     return true;
   }

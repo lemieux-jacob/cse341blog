@@ -7,14 +7,20 @@ use App\Models\User;
 
 class CommentController {
 
+  function __construct() {
+    // Check if the User is logged in
+    if (!user()) {
+      dd('Error!: Action is not authorized');
+    }
+  }
+
   /**
    * Create a new Comment :: Action
    * Form is in views/posts/show.view.php
   */
   public function store() {
-    if (!user()) {
-      return redirect('/login', 'Please login before commenting');
-    }
+
+    $user = user();
 
     $form = $this->validateComment([
       'user_id' => filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT),
@@ -22,17 +28,15 @@ class CommentController {
       'body' => filter_input(INPUT_POST, 'body', FILTER_SANITIZE_STRING)
     ]);
 
-    // dd(Post::fetch($form['post_id']));
-
     if (!$form['is_valid']) {
-      if (!empty($form['post_id']) || !Post::fetch($form['post_id'])) {
+      if (!empty($form['post_id'])) {
         return redirect('/posts/view?id=' . $form['post_id'], 'Notice!: Invalid or empty comment');
       }
-      dd('Error!: Unable to fetch Post with ID# ' . $form['post_id']);
+      dd('Error!: Post ID invalid or missing');
     }
 
-    if (!User::fetch($form['user_id'])) {
-      dd('Error!: Unable to fetch User with ID# ' . $form['user_id']);
+    if (!$user->isAdmin() || $user()->id != $user_id) {
+      dd('Error!: Action is not authorized');
     }
 
     $result = Comment::create($form);
@@ -77,6 +81,9 @@ class CommentController {
     return redirect('/posts/view?id=' . $form['post_id'], 'Error!: Failed to update Comment');
   }
 
+  /**
+   * Delete Comment :: Action
+  */
   public function delete() {
     $comment_id = filter_input(INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT);
 
@@ -96,6 +103,9 @@ class CommentController {
     return redirect('/posts/view?id=' . $form['post_id'], 'Error!: Failed to delete Comment');
   }
 
+  /**
+   * Validate Comment Data
+  */
   protected function validateComment($form) {
     foreach($form as $field) {
       if (empty($field)) {

@@ -7,11 +7,12 @@ use Parsedown;
 
 class PostController {
 
+  private $pd;
+
   function __construct() {
+    // Instantiate Parsedown
     $pd = new Parsedown();
-
     $pd->setSafeMode(true);
-
     $this->pd = $pd;
   }
 
@@ -49,7 +50,7 @@ class PostController {
   public function create() {
     $user = user();
 
-    if (!$user->isAdmin()) {
+    if (!$user || !$user->isAdmin()) {
       dd('Error!: This Action is unauthorized!');
     }
 
@@ -66,7 +67,7 @@ class PostController {
     // Get Current User
     $user = user();
 
-    if (!$user->isAdmin()) {
+    if (!$user || !$user->isAdmin()) {
       dd('Error!: This Action is unauthorized!');
     }
 
@@ -106,7 +107,7 @@ class PostController {
   public function edit() {
     $user = user();
 
-    if (!$user->isAdmin()) {
+    if (!$user || !$user->isAdmin()) {
       dd('Error!: This Action is unauthorized!');
     }
 
@@ -125,7 +126,7 @@ class PostController {
   public function update() {
     $user = user();
 
-    if (!$user->isAdmin()) {
+    if (!$user || !$user->isAdmin()) {
       dd('Error!: This Action is unauthorized!');
     }
 
@@ -172,7 +173,7 @@ class PostController {
    * Delete a Post
    */
   public function delete() {
-    if (!user()) {
+    if (!user() || !user()->isAdmin()) {
       dd('Error!: Action is not authorized');
     }
 
@@ -180,16 +181,6 @@ class PostController {
 
     if (empty($id)) {
       dd('Error!: Post ID invalid or missing');
-    }
-
-    $post = Post::fetch($id);
-
-    if (!$post) {
-      dd('Error!: Could not retrieve Post with ID# ' . $id);
-    }
-
-    if (!auth($post)) {
-      dd('Error!: This action is not authorized');
     }
 
     $result = Post::delete($id);
