@@ -50,7 +50,7 @@ class User {
       ':display_name' => $data['display_name'],
       ':email' => $data['email'],
       ':password' => $data['password'],
-      ':is_admin' => $data['is_admin']
+      ':is_admin' => (string) $data['is_admin']
     ]);
     $result = $stmt->rowCount();
     $stmt->closeCursor();
@@ -89,7 +89,7 @@ class User {
       ':display_name' => isset($data['display_name']) ? $data['display_name'] : $this->display_name,
       // ':email' => isset($data['email']) ? $data['email'] : $this->email,
       ':password' => isset($data['password']) ? $data['password'] : $this->password,
-      ':is_admin' => isset($data['is_admin']) ? $data['is_admin'] : $this->is_admin
+      ':is_admin' => (string) (isset($data['is_admin']) ? $data['is_admin'] : $this->is_admin)
     ]);
     $result = $stmt->rowCount();
     $stmt->closeCursor();
