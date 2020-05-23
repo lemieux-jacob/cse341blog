@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers\PostController;
+namespace App\Controllers;
 
 use App\Models\Post;
 use App\Models\Comment;
