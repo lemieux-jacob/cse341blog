@@ -69,7 +69,7 @@ class UserController {
     }
 
     // Initialize the Is Admin field to default (False)
-    $data['is_admin'] = false;
+    $data['is_admin'] = "false";
 
     // Hash the Password
     $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
