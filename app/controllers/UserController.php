@@ -22,15 +22,10 @@ class UserController {
    * Display a User's Account Info (Not Implemented)
   */
   public function show() {
-    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-
-    $user = User::fetch($id);
-
-    if (!user()->isAdmin() && user()->id != $user->id) {
+    if (!user()) {
       dd('Error!: Action is not Authorized');
     }
-
-    return view('users/show', ['user' => $user]);
+    return view('users/dashboard', ['user' => user()]);
   }
 
   /**
@@ -146,37 +141,38 @@ class UserController {
    */
   public function update() {
     // Validate Form Data
-    $data = $this->validateUser([
+    $form = $this->validateUser([
       'id' => filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT),
       'display_name' => filter_input(INPUT_POST, 'display_name', FILTER_SANITIZE_STRING),
-      // 'email' => filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL),
+      'old_password' => filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL),
       'password' => filter_input(INPUT_POST, 'password'),
       'confirm_password' => filter_input(INPUT_POST, 'confirm_password')
     ], 'update');
 
-    if (!$data['is_valid']) {
-      return view('users/create', [
-        'msg' => $data['error'],
-        'user' => isset($data['id']) ? User::fetch($data['id']) : user()
+    if (!$form['is_valid']) {
+      return view('users/edit', [
+        'msg' => $form['error'],
+        'form' => $form,
+        'user' => isset($form['id']) ? User::fetch($form['id']) : user()
       ]);
     }
 
     if (user()->isAdmin()) {
-      $data['is_admin'] = filter_input(INPUT_POST, 'is_admin', FILTER_VALIDATE_BOOLEAN);
+      $form['is_admin'] = filter_input(INPUT_POST, 'is_admin', FILTER_VALIDATE_BOOLEAN);
     }
 
     // Hash the Password
-    if (!empty($data['password'])) {
-      $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+    if (!empty($form['password'])) {
+      $form['password'] = password_hash($form['password'], PASSWORD_DEFAULT);
     }
 
-    $user = User::fetch($data['id']);
+    $user = User::fetch($form['id']);
 
     if (!$user) {
       dd('Error!: Record does not exist for User');
     }
 
-    $result = $user->update($data);
+    $result = $user->update($form);
 
     if ($result) {
       return redirect('/users?user=' . $user->id, 'Success!: Account Updated!');

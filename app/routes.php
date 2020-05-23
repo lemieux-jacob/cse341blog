@@ -21,6 +21,9 @@ return [
   'users/store' => 'UserController@store',
   'login' => 'UserController@loginForm',
   'handle-login' => 'UserController@loginAction',
-  'logout' => 'UserController@logout'
+  'logout' => 'UserController@logout',
+  'dashboard' => 'UserController@show',
+  'users/edit' => 'UserController@edit',
+  'users/update' => 'UserController@update'
 ];
 ?>

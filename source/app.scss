@@ -8,29 +8,6 @@
   font-family: "Comic Neue", sans-serif;
 }
 
-.speech-bubble {
-  color: #000;
-  position: relative;
-  background: #FFF;
-  border-radius: .4em;
-  padding: 12px;
-}
-
-.speech-bubble:after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 25%;
-  width: 0;
-  height: 0;
-  border: 20px solid transparent;
-  border-right-color: #FFF;
-  border-left: 0;
-  border-top: 0;
-  margin-top: -10px;
-  margin-left: -20px;
-}
-
 .grid-auto {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));

@@ -4,7 +4,9 @@
   <div class="card-body text-dark bg-light">
     <article>
       <h3 class="display-3"><?= $post->title; ?></h3>
+      <hr>
       <span class="text-muted">Posted on: <?= $post->posted_on; ?> By: <?= $post->author()->display_name; ?></span>
+      <hr>
       <hr>
       <?= $post->body; ?>
     </article>
@@ -13,12 +15,12 @@
 
 <?php if (user()): ?>
 <div class="card my-4">
-  <div class="card-body">
+  <div class="card-body pb-1">
     <form class="form" method="POST" action="/comments/store">
       <fieldset>
         <legend>Leave a Comment</legend>
-        <div class="form-group">
-          <textarea class="form-control" name="body" required></textarea>
+        <div class="form-group mb-1">
+          <textarea class="form-control mb" name="body" required></textarea>
         </div>
         <input type="hidden" name="user_id" value="<?= user()->id; ?>">
         <input type="hidden" name="post_id" value="<?= $post->id; ?>">
@@ -36,22 +38,21 @@
 </div>
 
 <?php foreach($comments as $comment): ?>
-<div class="d-flex align-items-center">
-  <div class="col-sm-2 align-self-start text-right m-2">
+<div class="card">
+  <div class="card-header">
     <?php if (access($comment) === 'owner'): ?>
-    <span><?= $comment->author()->display_name; ?><b>(You): </b></span>
+    <span><?= $comment->author()->display_name; ?><b>(You)</b> Replied on: <?= $comment->posted_on; ?>:</span>
     <?php else: ?>
-    <span><?= $comment->author()->display_name; ?>: </span>
+    <span><?= $comment->author()->display_name; ?>Replied on: <?= $comment->posted_on; ?>: </span>
     <?php endif; ?>
   </div>
-  <div class="col speech-bubble mb-4">
+  <div class="card-body bg-light text-dark">
     <p><?= $comment->body; ?></p>
-    <div class="d-flex align-content-end p-0 bg-light rounded">
-      <div class="px-2 py-3">
-        Replied on: <?= $comment->posted_on; ?>
-      </div>
-      <?php if (auth($comment)): ;?>
-      <div class="ml-auto">
+  </div>
+  <div class="card-footer">
+    <?php if (auth($comment)): ;?>
+    <div class="d-flex">
+      <div class="d-flex ml-auto">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CommentModal"
           data-post="<?= $comment->post_id; ?>" data-user="<?= $comment->user_id; ?>"
           data-comment="<?= $comment->id; ?>" data-body="<?= $comment->body;?>">Edit</button>
@@ -60,14 +61,14 @@
         <form method="POST" class="form-inline m-0" action="/comments/delete">
           <input type="hidden" name="post_id" value="<?= $post->id; ?>">
           <input type="hidden" name="comment_id" value="<?= $comment->id; ?>">
-          <input class="btn btn-danger ml-1 mr-3" type="submit" value="Delete">
+          <input class="btn btn-danger ml-1" type="submit" value="Delete">
         </form>
       </div>
-      <?php endif; ?>
     </div>
+    <?php endif; ?>
+    <?php endforeach; ?>
   </div>
 </div>
-<?php endforeach; ?>
 
 <?php partial('footer'); ?>
 

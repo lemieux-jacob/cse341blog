@@ -12,6 +12,11 @@ class User {
   private $password;
   private $is_admin;
 
+  // Get User Attributes
+  public function attr($attr) {
+    return $this->$attr;
+  }
+
   // Check if User is Admin
   public function isAdmin() {
     return $this->is_admin;
@@ -30,7 +35,7 @@ class User {
   public function toArray() {
     return [
       'id' => $this->id,
-      'display_name' => $this->id,
+      'display_name' => $this->display_name,
       'email' => $this->email,
       'password' => $this->password,
       'is_admin' => $this->is_admin
