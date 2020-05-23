@@ -10,12 +10,12 @@ class UserController {
   */
   public function index() {
     if (!user()->isAdmin()) {
-      dd('Notice!: Action is not Authorized');
+      dd('Error!: Action is not Authorized');
     }
 
     $users = User::fetchAll();
 
-    return view('users/index', ['users' => $users]);  
+    return view('users/index', ['users' => $users]);
   }
 
   /**
@@ -27,7 +27,7 @@ class UserController {
     $user = User::fetch($id);
 
     if (!user()->isAdmin() && user()->id != $user->id) {
-      dd('Notice!: Action is not Authorized');
+      dd('Error!: Action is not Authorized');
     }
 
     return view('users/show', ['user' => $user]);
@@ -78,10 +78,10 @@ class UserController {
     $result = User::create($data);
 
     if ($result) {
-      return redirect('/login' . $user->id, 'Account Created! Please Login!');
+      return redirect('/login' . $user->id, 'Success!: Account Created! Please Login!');
     }
 
-    return redirect('/' . $user->id, 'Account Creation failed! Please try again!');
+    return redirect('/' . $user->id, 'Error!: Account Creation failed! Please try again!');
   }
 
   /**
@@ -104,18 +104,18 @@ class UserController {
     ];
 
     if (empty($data['email']) || empty($data['password'])) {
-      return view('users/login', ['msg' => 'Please enter a valid email and password!']);
+      return view('users/login', ['msg' => 'Notice!: Please enter a valid email and password!']);
     }
 
     $user = User::withEmail($data['email']);
 
     if (empty($user) || $user->password($data['password']) != $data['password']) {
-      return view('users/login', ['msg' => 'Incorrect email or password combination!']);
+      return view('users/login', ['msg' => 'Notice!: Incorrect email or password combination!']);
     }
 
     $_SESSION['user'] = $user->toArray();
 
-    return redirect('/', 'You are logged in as ' . $user->display_name);
+    return redirect('/', 'Success!: You are logged in as ' . $user->display_name);
   }
 
   /**
@@ -173,15 +173,22 @@ class UserController {
     $user = User::fetch($data['id']);
 
     if (!$user) {
-      dd('Record does not exist for User.');
+      dd('Error!: Record does not exist for User');
     }
 
     $result = $user->update($data);
 
     if ($result) {
-      return redirect('/users?user=' . $user->id, 'Account Updated!');
+      return redirect('/users?user=' . $user->id, 'Success!: Account Updated!');
     }
-    return redirect('/users?user=' . $user->id, 'Account Update failed!');
+    return redirect('/users?user=' . $user->id, 'Error!: Account Update failed!');
+  }
+
+  /**
+   * Delete User 
+   */
+  public function delete() {
+    // TODO :: Complete Delete Action
   }
 
   /**
@@ -191,13 +198,13 @@ class UserController {
     foreach($form as $field) {
       if (empty($field)) {
         $form['is_valid'] = false;
-        $form['error'] = 'A required field is missing or invalid!';
+        $form['error'] = 'Notice!: A required field is missing or invalid!';
         return $form;
       }
     }
     if (!$form['password'] === $form['confirm_password']) {
       $form['is_valid'] = false;
-      $form['error'] = 'Passwords do not match!';
+      $form['error'] = 'Notice!: Passwords do not match!';
       return $form;
     }
     if (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $form['password'])) {
@@ -205,13 +212,13 @@ class UserController {
        * Minimum eight characters, at least one letter, one number and one special character.
       */
       $form['is_valid'] = false;
-      $form['error'] = 'Please enter a valid password.';
+      $form['error'] = 'Notice!: Please enter a valid password.';
       return $form;
     }
     if ($action === 'create') {
       if (!User::hasUniqueEmail($form['email'])) {
         $form['is_valid'] = false;
-        $form['error'] = 'An Account already exists for that Email!';
+        $form['error'] = 'Notice!: An Account already exists for that Email';
         return $form;
       }
     }

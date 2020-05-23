@@ -135,10 +135,11 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 /*!***********************!*\
   !*** ./source/app.js ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("__webpack_require__(/*! bootstrap */ \"./node_modules/bootstrap/dist/js/bootstrap.js\");//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zb3VyY2UvYXBwLmpzPzBiZWUiXSwibmFtZXMiOlsicmVxdWlyZSJdLCJtYXBwaW5ncyI6IkFBQUFBLG1CQUFPLENBQUMsZ0VBQUQsQ0FBUCIsImZpbGUiOiIuL3NvdXJjZS9hcHAuanMuanMiLCJzb3VyY2VzQ29udGVudCI6WyJyZXF1aXJlKCdib290c3RyYXAnKTsiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./source/app.js\n");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);\n__webpack_require__(/*! bootstrap */ \"./node_modules/bootstrap/dist/js/bootstrap.js\");\n\n\nwindow.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zb3VyY2UvYXBwLmpzPzBiZWUiXSwibmFtZXMiOlsicmVxdWlyZSIsIndpbmRvdyIsIiQiLCJqUXVlcnkiXSwibWFwcGluZ3MiOiJBQUFBQTtBQUFBQTtBQUFBQTtBQUFBQSxtQkFBTyxDQUFDLGdFQUFELENBQVA7O0FBRUE7QUFDQUMsTUFBTSxDQUFDQyxDQUFQLEdBQVdELE1BQU0sQ0FBQ0UsTUFBUCxHQUFnQkQsNkNBQTNCIiwiZmlsZSI6Ii4vc291cmNlL2FwcC5qcy5qcyIsInNvdXJjZXNDb250ZW50IjpbInJlcXVpcmUoJ2Jvb3RzdHJhcCcpO1xyXG5cclxuaW1wb3J0ICQgZnJvbSAnanF1ZXJ5Jztcclxud2luZG93LiQgPSB3aW5kb3cualF1ZXJ5ID0gJDsiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./source/app.js\n");
 
 /***/ }),
 
@@ -160,8 +161,8 @@ eval("// removed by extract-text-webpack-plugin//# sourceURL=[module]\n//# sourc
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\GrilledFish\Desktop\blog2.0\source\app.js */"./source/app.js");
-module.exports = __webpack_require__(/*! C:\Users\GrilledFish\Desktop\blog2.0\source\app.scss */"./source/app.scss");
+__webpack_require__(/*! C:\Users\GrilledFish\Desktop\blog\source\app.js */"./source/app.js");
+module.exports = __webpack_require__(/*! C:\Users\GrilledFish\Desktop\blog\source\app.scss */"./source/app.scss");
 
 
 /***/ })

@@ -35,8 +35,9 @@ $routes = [
   'posts/edit' => 'PostController@edit',
   'posts/update' => 'PostController@update',
   // Comment Routes
-  'comments' => 'CommentController@store',
-  'comments' => 'CommentController@update',
+  'comments/store' => 'CommentController@store',
+  'comments/update' => 'CommentController@update',
+  'comments/delete' => 'CommentController@delete',
   // User Routes
   'register' => 'UserController@create',
   'users/store' => 'UserController@store',

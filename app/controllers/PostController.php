@@ -41,7 +41,7 @@ class PostController {
     $user = user();
 
     if (!$user->isAdmin()) {
-      dd('Notice!: This Action is unauthorized!');
+      dd('Error!: This Action is unauthorized!');
     }
 
     return view('posts/create', [
@@ -58,7 +58,7 @@ class PostController {
     $user = user();
 
     if (!$user->isAdmin()) {
-      dd('Notice!: This Action is unauthorized!');
+      dd('Error!: This Action is unauthorized!');
     }
 
     // Collect Form Data
@@ -72,7 +72,7 @@ class PostController {
       return view('posts/create', [
         'user' => $user,
         'form' => $form, 
-        'msg' => 'Some required fields were empty or invalid.'
+        'msg' => 'Notice!: Some required fields were empty or invalid.'
       ]);
     }
 
@@ -95,7 +95,7 @@ class PostController {
     $user = user();
 
     if (!$user->isAdmin()) {
-      dd('Notice!: This Action is unauthorized!');
+      dd('Error!: This Action is unauthorized!');
     }
 
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
@@ -137,7 +137,7 @@ class PostController {
         'user' => $user,
         'form' => $form,
         'post' => $post,
-        'msg' => 'Some required fields were empty or invalid.'
+        'msg' => 'Notice!: Some required fields were empty or invalid.'
       ]);
     }
 
@@ -147,10 +147,42 @@ class PostController {
     $result = $post->update($form);
 
     if ($result) {
-      return redirect('/', 'Post Updated!');
+      return redirect('/', 'Success!: Post Updated');
     }
 
-    return redirect('/', 'Failed to Update Post!');
+    return redirect('/', 'Error!: Failed to Update Post');
+  }
+
+  /**
+   * Delete a Post
+   */
+  public function delete() {
+    if (!user()) {
+      dd('Error!: Action is not authorized');
+    }
+
+    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+    if (empty($id)) {
+      dd('Error!: Post ID invalid or missing');
+    }
+
+    $post = Post::fetch($id);
+
+    if (!$post) {
+      dd('Error!: Could not retrieve Post with ID# ' . $id);
+    }
+
+    if (!auth($post)) {
+      dd('Error!: This action is not authorized');
+    }
+
+    $result = Post::delete($id);
+
+    if ($result) {
+      return redirect('/', 'Success!: Post Deleted!');
+    }
+    return redirect('/', 'Error!: Failed to Delete Post!');
   }
 
   protected function validatePost($form) {

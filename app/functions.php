@@ -8,18 +8,22 @@ function user() {
   return false;
 }
 
-function auth($access = 'user') {
-  if (user()) {
-    if ($access === 'user') {
-      return true;
-    }
-    if ($user->isAdmin()) {
-      return true;
-    }
-  } else if ($access === 'guest') {
-    return true;
+// Authorize User for Resource
+function access($resource) {
+  if (!user()) {
+    return false;
+  } else if (user()->id === $resource->user_id) {
+    return 'owner';
+  } else if (user()->isAdmin()) {
+    return 'admin';
   }
   return false;
+}
+
+function auth($resource) {
+  if (access($resource) != false) {
+    return true;
+  }
 }
 
 // Render Views and Partials (e.g. render('views/home', $data_array))

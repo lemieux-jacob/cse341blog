@@ -7,13 +7,13 @@ use \PDO;
 class Comment {
 
   public $id;
-  private $user_id;
-  private $post_id;
+  public $user_id;
+  public $post_id;
   public $body;
   public $posted_on;
 
   public function author() {
-    return User::fetch($this->id);
+    return User::fetch($this->user_id);
   }
 
   // Cast Array to Comment
@@ -49,7 +49,7 @@ class Comment {
     $stmt->execute([':id' => $id]);
     $comments = $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     $stmt->closeCursor();
-    return $comments;
+    return $comments[0];
   }
 
   // Fetch all Comments for Post from the DB
