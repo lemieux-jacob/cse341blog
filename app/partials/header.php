@@ -8,6 +8,7 @@
   <title>Document</title>
   <link rel="stylesheet" href="/styles/app.css">
   <script src="https://kit.fontawesome.com/ec58e5f1d7.js" crossorigin="anonymous"></script>
+  <script src="/scripts/app.js"></script>
 </head>
 
 <body>

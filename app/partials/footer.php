@@ -11,6 +11,5 @@
         </div>
       </footer>
     </div>
-    <script src="/scripts/app.js"></script>
   </body>
 </html>

@@ -54,7 +54,7 @@ class UserController {
       'password' => filter_input(INPUT_POST, 'password'),
       'confirm_password' => filter_input(INPUT_POST, 'confirm_password'),
       // 'is_admin' => filter_input(INPUT_POST, 'is_admin', FILTER_SANITIZE_NUMBER_INT),
-    ], 'create');
+    ], 'create', ['validate-password' => true]);
 
     if (!$data['is_valid']) {
       return view('users/create', [
