@@ -224,11 +224,21 @@ class UserController {
   }
 
   /**
-   * Delete User 
+   * Delete User (Not Implemented)
    */
   public function delete() {
     $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
 
+    if (empty($id)) {
+      error('Error!: Missing User ID');
+    }
+
+    $result = User::delete($id);
+
+    if ($result) {
+      return redirect('/login', 'Success!: User Deleted!');
+    }
+    return redirect('/dashboard', 'Error!: Failed to Delete User!');
   }
 
   /**
