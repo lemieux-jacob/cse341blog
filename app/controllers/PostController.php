@@ -3,6 +3,8 @@ namespace App\Controllers;
 
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Tag;
+
 use Parsedown;
 
 class PostController {
@@ -20,11 +22,22 @@ class PostController {
    * Display and Search All Posts
    */
   public function index() {
-    $search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING);
+    $searchQuery = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING);
+    $tagname = filter_input(INPUT_GET, 'tag', FILTER_SANITIZE_STRING);
 
-    if (!empty($search)) {
-      $search = ucwords(strtolower($search));
-      $posts = Post::fetchAll($search);
+    if (!empty($searchQuery)) {
+      // Find Posts by Title
+      // Match Title Formating
+      $searchQuery = ucwords(strtolower($searchQuery));
+      $posts = Post::fetchAll($searchQuery);
+    } else if (!empty($tagname)) {
+      // Find Posts by Tag
+      $tag = Tag::fetch($tagname);
+      if (!$tag) {
+        $posts = Post::fetchAll(); 
+      } else {
+        $posts = $tag->posts();
+      }
     } else {
       $posts = Post::fetchAll();
     }

@@ -19,6 +19,6 @@
     </form>
   </div>
   <div class="card-footer text-right p-1">
-    <a class="btn btn-primary" href="/posts">Back to Posts</a>
+    <a class="btn btn-primary mr-4" href="/posts">Back to Posts</a>
   </div>
 </div>

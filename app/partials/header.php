@@ -26,7 +26,7 @@
           </li>
         </ul>
         <form class="form-inline" action="/posts" method="GET" class="ml-auto form-inline my-2 my-lg-0">
-          <input name="search" class="form-control mr-sm-2" type="search" value="<?php $search; ?>" placeholder="Search Posts" aria-label="Search">
+          <input name="search" class="form-control mr-sm-2" type="search" value="<?php $search; ?>" placeholder="Search Posts (by Title)" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <div class="navbar border-0">

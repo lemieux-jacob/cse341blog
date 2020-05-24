@@ -14,15 +14,15 @@
     <div class="d-flex flex-wrap">
       <?php foreach($tags as $tag):?>
       <div class="badge badge-pill badge-secondary p-2 ml-1">
-        <?= $tag->attr('name') ;?>
+        <a href="/?tag=<?= $tag->attr('name');?>"><?= $tag->attr('name') ;?></a>
       </div>
       <?php endforeach; ?>
     </div>
   </div>
-  <div class="card-footer">
+  <div class="card-footer d-flex">
     <?php if (access($post)): ?>
-    <a class="btn btn-primary mx-1" href="/posts/edit?id=<?= $post->id ?>">Edit Post</a>
-    <form method="POST" class="form-inline m-0" action="/posts/delete">
+    <a class="btn btn-primary ml-auto" href="/posts/edit?id=<?= $post->id ?>">Edit Post</a>
+    <form method="POST" class="form-inline ml-1 m-0" action="/posts/delete">
       <input type="hidden" name="post_id" value="<?= $post->id; ?>">
       <input class="btn btn-danger" type="submit" value="Delete">
     </form>
@@ -87,8 +87,6 @@
   </div>
 </div>
 
-<?php partial('footer'); ?>
-
 <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="CommentModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -119,3 +117,5 @@
 </div>
 
 <script src="/scripts/commentForm.js"></script>
+
+<?php partial('footer'); ?>

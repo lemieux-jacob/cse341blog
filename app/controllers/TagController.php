@@ -19,7 +19,9 @@ class TagController {
     $post_id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 
-    if (empty($post_id)) error('Error!: Post ID is missing');
+    if (empty($post_id)) {
+      error('Error!: Post ID is missing');
+    }
 
     if (empty($name)) {
       return redirect('/posts/edit?id=' . $post_id, "Notice!: Please enter a valid tagname");
@@ -30,6 +32,9 @@ class TagController {
     }
 
     $existing_tags = $post->tags();
+
+    // Convert Tag to Lowercase
+    $name = strtolower($name);
 
     foreach ($existing_tags as $t) {
       if ($t->attr('name') === $name) {
