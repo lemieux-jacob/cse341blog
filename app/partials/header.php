@@ -13,7 +13,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary">
     <div class="container">
-      <a class="navbar-brand" href="/">Bloggity</a>
+      <a class="navbar-brand" href="/">MyBlog</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -22,7 +22,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/">Posts</a>
           </li>
         </ul>
         <form class="form-inline" action="/posts" method="GET" class="ml-auto form-inline my-2 my-lg-0">

@@ -35,10 +35,6 @@ class CommentController {
       dd('Error!: Post ID invalid or missing');
     }
 
-    if (!$user->isAdmin() || $user->id != $form['user_id']) {
-      dd('Error!: Action is not authorized');
-    }
-
     $result = Comment::create($form);
 
     if ($result) {
@@ -90,10 +86,6 @@ class CommentController {
 
     if (empty($comment_id)) {
       dd('Error!: Comment ID empty or invalid');
-    }
-
-    if (!$comment && !auth($comment)) {
-      dd('Error!: This action is not authorized');
     }
 
     $result = Comment::delete($comment_id);

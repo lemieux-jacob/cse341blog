@@ -38,7 +38,11 @@ class Tag {
     $stmt->execute([':name' => $name]);
     $tags = $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     $stmt->closeCursor();
-    return $tags[0];
+    if (count($tags) > 0) {
+      return $tags[0];
+    } else {
+      return false;
+    }
   }
 
   public static function delete($id) {

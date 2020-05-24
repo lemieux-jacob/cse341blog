@@ -10,13 +10,22 @@
       <hr>
       <?= $post->body; ?>
     </article>
+    <div class="d-flex flex-wrap">
+      <?php foreach($tags as $tag):?>
+      <div class="badge badge-pill badge-secondary ml-1">
+        <?= $tag->attr('name') ;?>
+      </div>
+      <?php endforeach; ?>
+    </div>
   </div>
   <div class="card-footer">
-    <?php foreach($tags as $tag):?>
-    <div class="badge badge-pill badge-secondary">
-      <?= $tag->attr('name') ;?>
-    </div>
-    <?php endforeach; ?>
+    <?php if (access($post)): ?>
+    <a class="btn btn-primary mx-1" href="/posts/edit?id=<?= $post->id ?>">Edit Post</a>
+    <form method="POST" class="form-inline m-0" action="/posts/delete">
+      <input type="hidden" name="post_id" value="<?= $post->id; ?>">
+      <input class="btn btn-danger" type="submit" value="Delete">
+    </form>
+    <?php endif; ?>
   </div>
 </div>
 

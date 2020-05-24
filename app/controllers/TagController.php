@@ -19,8 +19,10 @@ class TagController {
     $post_id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 
-    if (empty($post_id) || empty($name)) {
-      dd('Error!: Post or Tag ID is missing');
+    if (empty($post_id)) dd('Error!: Post ID is missing');
+
+    if (empty($name)) {
+      return redirect('/posts/edit?id=' . $post_id, "Notice!: Please enter a valid tagname");
     }
 
     if (!$post = Post::fetch($post_id)) {
@@ -35,7 +37,9 @@ class TagController {
       }
     }
 
-    if (!$tag = Tag::fetch($name)) {
+    $tag = Tag::fetch($name);
+
+    if (!$tag) {
       $tag = Tag::create([
         'name' => $name
       ]);
