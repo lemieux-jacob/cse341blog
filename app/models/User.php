@@ -46,6 +46,15 @@ class User {
     return password_verify($password, $this->password);
   }
 
+  protected function bool2str($bool) {
+    if ($bool === true) {
+      $bool = "true";
+    } else {
+      $bool = "false";
+    }
+    return $bool;
+  }
+
   // Create a new User in DB
   public static function create(Array $data) {
     $pdo = DB::connect();
@@ -95,7 +104,7 @@ class User {
       ':display_name' => isset($data['display_name']) ? $data['display_name'] : $this->display_name,
       // ':email' => isset($data['email']) ? $data['email'] : $this->email,
       ':password' => isset($data['password']) ? $data['password'] : $this->password,
-      ':is_admin' => isset($data['is_admin']) ? $data['is_admin'] : $this->is_admin
+      ':is_admin' => isset($data['is_admin']) ? $this->bool2str($data[is_admin]) : $this->bool2str("$this->is_admin")
     ]);
     $result = $stmt->rowCount();
     $stmt->closeCursor();

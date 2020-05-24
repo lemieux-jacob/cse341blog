@@ -30,7 +30,7 @@ class DB {
       $db = new PDO($connection, $dbUser, $dbPassword);
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $ex) {
-      dd('Error!:' . $ex->getMessage());
+      error('Error!:' . $ex->getMessage());
     }
   
     return $db;

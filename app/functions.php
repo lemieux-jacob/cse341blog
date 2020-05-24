@@ -57,6 +57,19 @@ function strPlural($str) {
   return $str . "s";
 }
 
+// Error
+function error($msg) {
+  $classes = [
+    'Error!' => 'alert alert-danger text-danger',
+    'Notice!' => 'alert alert-warning text-warning',
+    'Info!' => 'alert alert-info text-info',
+    'Success!' => 'alert alert-success text-success'
+  ];
+  $parts = explode(':', $msg);
+  view('error', ['msg' => "<div class='{$classes[$parts[0]]}'>$msg</div>"]);
+  exit;
+}
+
 // For Debugging
 function dd($var) {
   var_dump($var);

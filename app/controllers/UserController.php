@@ -10,7 +10,7 @@ class UserController {
   */
   public function index() {
     if (!user()->isAdmin()) {
-      dd('Error!: Action is not Authorized');
+      error('Error!: Action is not Authorized');
     }
 
     $users = User::fetchAll();
@@ -19,13 +19,13 @@ class UserController {
   }
 
   /**
-   * Display a User's Account Info (Not Implemented)
+   * Display a User's Dashboard
   */
   public function show() {
     if (!user()) {
-      dd('Error!: Action is not Authorized');
+      error('Error!: Action is not Authorized');
     }
-    return view('users/dashboard', ['user' => user()]);
+    return view('users/dashboard', ['user' => User::fetch(user()->id)]);
   }
 
   /**
@@ -144,9 +144,6 @@ class UserController {
     $form = $this->validateUser([
       'id' => filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT),
       'display_name' => filter_input(INPUT_POST, 'display_name', FILTER_SANITIZE_STRING),
-      'old_password' => filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL),
-      'password' => filter_input(INPUT_POST, 'password'),
-      'confirm_password' => filter_input(INPUT_POST, 'confirm_password')
     ], 'update');
 
     if (!$form['is_valid']) {
@@ -157,40 +154,88 @@ class UserController {
       ]);
     }
 
-    if (user()->isAdmin()) {
-      $form['is_admin'] = filter_input(INPUT_POST, 'is_admin', FILTER_VALIDATE_BOOLEAN);
-    }
-
-    // Hash the Password
-    if (!empty($form['password'])) {
-      $form['password'] = password_hash($form['password'], PASSWORD_DEFAULT);
+    if (!user()->isAdmin() && user()->id != $form['id']) {
+      error('Error!: Action is not authorized');
     }
 
     $user = User::fetch($form['id']);
 
     if (!$user) {
-      dd('Error!: Record does not exist for User');
+      error('Error!: Record does not exist for User');
     }
 
     $result = $user->update($form);
 
     if ($result) {
-      return redirect('/users?user=' . $user->id, 'Success!: Account Updated!');
+      return redirect('/dashboard', 'Success!: Account Updated!');
     }
-    return redirect('/users?user=' . $user->id, 'Error!: Account Update failed!');
+    return redirect('/dashboard', 'Error!: Account Update failed!');
+  }
+
+  public function changePassword() {
+    $form = $this->validateUser([
+      'id' => filter_input(INPUT_POST, 'id', FILTER_SANITIZE_STRING),
+      'old_password' => filter_input(INPUT_POST, 'old_password'),
+      'password' => filter_input(INPUT_POST, 'password'),
+      'confirm_password' => filter_input(INPUT_POST, 'confirm_password')
+    ], 'update', ['validate-password' => true]);
+
+    if (!$form['is_valid']) {
+      return view('users/edit', [
+        'msg' => $form['error'],
+        'form' => $form,
+        'user' => isset($form['id']) ? User::fetch($form['id']) : user()
+      ]);
+    }
+
+    if (!user()->isAdmin() && user()->id != $form['id']) {
+      error('Error!: Action is not authorized');
+    }
+
+    $user = User::fetch($form['id']);
+
+    if (!$user->password($form['old_password'])) {
+      return view('/users/edit', [
+        'msg' => 'Notice!: Current Password does not match our records',
+        'form' => $form,
+        'user' => isset($form['id']) ? User::fetch($form['id']) : user()
+      ]);
+    }
+
+    // Hash the Password
+    $form['password'] = password_hash($form['password'], PASSWORD_DEFAULT);
+
+    if (!$user) {
+      error('Error!: Record does not exist for User');
+    }
+
+    $result = $user->update($form);
+
+    if ($result) {
+      // Log the User out
+      session_destroy();
+
+      // Start new Session
+      session_start();
+
+      return redirect('/login', 'Success!: Password Changed! Please login again with your new password.');
+    }
+    return redirect('/dashboard', 'Error!: Account Update failed!');
   }
 
   /**
    * Delete User 
    */
   public function delete() {
-    // TODO :: Complete Delete Action
+    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+
   }
 
   /**
    * Validate User Form Data
   */
-  protected function validateUser($form, $action) {
+  protected function validateUser($form, $action, $options = []) {
+    // Ensure all required fields are populated for action
     foreach($form as $field) {
       if (empty($field)) {
         $form['is_valid'] = false;
@@ -198,19 +243,20 @@ class UserController {
         return $form;
       }
     }
-    if (!$form['password'] === $form['confirm_password']) {
-      $form['is_valid'] = false;
-      $form['error'] = 'Notice!: Passwords do not match!';
-      return $form;
+    if (isset($options['validate-password']) && $options['validate-password'] === true) {
+      if (!$form['password'] === $form['confirm_password']) {
+        $form['is_valid'] = false;
+        $form['error'] = 'Notice!: Passwords do not match!';
+        return $form;
+      }
+      if (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $form['password'])) {
+        // Minimum eight characters, at least one letter, one number and one special character.
+        $form['is_valid'] = false;
+        $form['error'] = 'Notice!: Please enter a valid password.';
+        return $form;
+      }
     }
-    if (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $form['password'])) {
-      /**
-       * Minimum eight characters, at least one letter, one number and one special character.
-      */
-      $form['is_valid'] = false;
-      $form['error'] = 'Notice!: Please enter a valid password.';
-      return $form;
-    }
+    // Verify Email is Unique
     if ($action === 'create') {
       if (!User::hasUniqueEmail($form['email'])) {
         $form['is_valid'] = false;

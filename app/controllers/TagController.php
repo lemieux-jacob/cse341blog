@@ -8,7 +8,7 @@ class TagController {
 
   function __construct() {
     if (!user() && !user()->isAdmin()) {
-      dd('Error!: Action is not authorized');
+      error('Error!: Action is not authorized');
     }
   }
 
@@ -19,14 +19,14 @@ class TagController {
     $post_id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 
-    if (empty($post_id)) dd('Error!: Post ID is missing');
+    if (empty($post_id)) error('Error!: Post ID is missing');
 
     if (empty($name)) {
       return redirect('/posts/edit?id=' . $post_id, "Notice!: Please enter a valid tagname");
     }
 
     if (!$post = Post::fetch($post_id)) {
-      dd('Error!: Could not find Post with ID# ' . $post_id);
+      error('Error!: Could not find Post with ID# ' . $post_id);
     }
 
     $existing_tags = $post->tags();

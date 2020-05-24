@@ -24,6 +24,7 @@ return [
   'logout' => 'UserController@logout',
   'dashboard' => 'UserController@show',
   'users/edit' => 'UserController@edit',
-  'users/update' => 'UserController@update'
+  'users/update' => 'UserController@update',
+  'users/change-password' => 'UserController@changePassword'
 ];
 ?>

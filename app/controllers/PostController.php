@@ -54,7 +54,7 @@ class PostController {
     $user = user();
 
     if (!$user || !$user->isAdmin()) {
-      dd('Error!: This Action is unauthorized!');
+      error('Error!: This Action is unauthorized!');
     }
 
     return view('posts/create', [
@@ -71,7 +71,7 @@ class PostController {
     $user = user();
 
     if (!$user || !$user->isAdmin()) {
-      dd('Error!: This Action is unauthorized!');
+      error('Error!: This Action is unauthorized!');
     }
 
     // Collect Form Data
@@ -111,13 +111,13 @@ class PostController {
     $user = user();
 
     if (!$user || !$user->isAdmin()) {
-      dd('Error!: This Action is unauthorized!');
+      error('Error!: This Action is unauthorized!');
     }
 
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
     if (empty($id)) {
-      dd('Error!: Post does not exist');
+      error('Error!: Post does not exist');
     }
 
     $post = Post::fetch($id);
@@ -137,7 +137,7 @@ class PostController {
     $user = user();
 
     if (!$user || !$user->isAdmin()) {
-      dd('Error!: This Action is unauthorized!');
+      error('Error!: This Action is unauthorized!');
     }
 
     // Collect Form Data
@@ -152,7 +152,7 @@ class PostController {
     $post = Post::fetch($form['post_id']);
 
     if (!$post) {
-      dd('Error!: Post does not exist!');
+      error('Error!: Post does not exist!');
     }
 
     if (!$form['is_valid']) {
@@ -184,13 +184,13 @@ class PostController {
    */
   public function delete() {
     if (!user() || !user()->isAdmin()) {
-      dd('Error!: Action is not authorized');
+      error('Error!: Action is not authorized');
     }
 
     $id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
 
     if (empty($id)) {
-      dd('Error!: Post ID invalid or missing');
+      error('Error!: Post ID invalid or missing');
     }
 
     $result = Post::delete($id);

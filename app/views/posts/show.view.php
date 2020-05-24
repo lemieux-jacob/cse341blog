@@ -10,9 +10,10 @@
       <hr>
       <?= $post->body; ?>
     </article>
+    <h4>Tags: </h4>
     <div class="d-flex flex-wrap">
       <?php foreach($tags as $tag):?>
-      <div class="badge badge-pill badge-secondary ml-1">
+      <div class="badge badge-pill badge-secondary p-2 ml-1">
         <?= $tag->attr('name') ;?>
       </div>
       <?php endforeach; ?>

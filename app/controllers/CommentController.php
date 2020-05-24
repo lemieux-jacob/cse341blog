@@ -10,7 +10,7 @@ class CommentController {
   function __construct() {
     // Check if the User is logged in
     if (!user()) {
-      dd('Error!: Action is not authorized');
+      error('Error!: Action is not authorized');
     }
   }
 
@@ -32,7 +32,7 @@ class CommentController {
       if (!empty($form['post_id'])) {
         return redirect('/posts/view?id=' . $form['post_id'], 'Notice!: Invalid or empty comment');
       }
-      dd('Error!: Post ID invalid or missing');
+      error('Error!: Post ID invalid or missing');
     }
 
     $result = Comment::create($form);
@@ -66,7 +66,7 @@ class CommentController {
     $comment = Comment::fetch($form['comment_id']);
 
     if (!$comment || !auth($comment)) {
-      dd('Error!: This action is not authorized');
+      error('Error!: This action is not authorized');
     }
 
     $result = $comment->update($form);
@@ -85,7 +85,7 @@ class CommentController {
     $post_id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
 
     if (empty($comment_id)) {
-      dd('Error!: Comment ID empty or invalid');
+      error('Error!: Comment ID empty or invalid');
     }
 
     $result = Comment::delete($comment_id);
