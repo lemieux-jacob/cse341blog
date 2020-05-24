@@ -11,6 +11,7 @@
       <?= $post->body; ?>
     </article>
     <h4>Tags: </h4>
+    <span class="text-small">Click to read more about: </span>
     <div class="d-flex flex-wrap">
       <?php foreach($tags as $tag):?>
       <div class="badge badge-pill badge-secondary p-2 ml-1">
